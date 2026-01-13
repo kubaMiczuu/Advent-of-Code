@@ -1,0 +1,34 @@
+package Day3;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner input = new Scanner(new File("./puzzle.txt"));
+        BigInteger sum = BigInteger.ZERO;
+        while (input.hasNextLine()) {
+            List<String> line = new ArrayList<>(List.of(input.nextLine().split("")));
+            int toRemove = line.size() - 12;
+            List<String> stack = new ArrayList<>();
+            for(int i=0;i<line.size();i++){
+                int currentDigit = Integer.parseInt(line.get(i));
+                while(toRemove>0 && stack.size()>0 && Integer.parseInt(stack.get(stack.size()-1))<currentDigit){
+                    stack.remove(stack.size()-1);
+                    toRemove--;
+                }
+                stack.add(String.valueOf(currentDigit));
+            }
+            if(stack.size()>12){
+                stack = stack.subList(0,12);
+            }
+            String finalNumber = String.join("", stack);
+            sum=sum.add(new BigInteger(finalNumber));
+        }
+        System.out.println(sum);
+    }
+}
